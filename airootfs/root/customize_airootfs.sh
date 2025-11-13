@@ -71,6 +71,20 @@ if [ -n "$TARGET" ] && [ -f "$CONF_PATH" ]; then
   fi
 fi
 
+if [ -f "$CONF_PATH" ] && command -v jq >/dev/null 2>&1; then
+  BIDX=$(jq -r '.disk_config.device_modifications[0].partitions | to_entries[] | select(.value.fs_type=="btrfs") | .key' "$CONF_PATH" | head -n1)
+  if [ -n "$BIDX" ]; then
+    ROOT_PCT=${XOS_ROOT_PERCENT:-100}
+    TMP=$(mktemp)
+    jq ".disk_config.device_modifications[0].partitions[$BIDX].size = {\"sector_size\": {\"unit\": \"B\", \"value\": 512}, \"unit\": \"Percent\", \"value\": $ROOT_PCT}" "$CONF_PATH" > "$TMP" && mv "$TMP" "$CONF_PATH"
+  fi
+  FIDX=$(jq -r '.disk_config.device_modifications[0].partitions | to_entries[] | select(.value.fs_type=="fat32") | .key' "$CONF_PATH" | head -n1)
+  if [ -n "$FIDX" ] && [ -n "${XOS_BOOT_SIZE_MIB:-}" ]; then
+    TMP=$(mktemp)
+    jq ".disk_config.device_modifications[0].partitions[$FIDX].size = {\"sector_size\": {\"unit\": \"B\", \"value\": 512}, \"unit\": \"MiB\", \"value\": ${XOS_BOOT_SIZE_MIB}}" "$CONF_PATH" > "$TMP" && mv "$TMP" "$CONF_PATH"
+  fi
+fi
+
 INSTALL_OK=0
 if [ -f "$CONF_PATH" ]; then
   if [ -f "$CREDS_PATH" ]; then
@@ -82,7 +96,7 @@ else
   if archinstall; then INSTALL_OK=1; fi
 fi
 
-# Postinstall (branding del sistema instalado)
+# Postinstall (branding xos)
 if [ "$INSTALL_OK" = "1" ] && [ -f /root/xos-postinstall.sh ]; then
   bash /root/xos-postinstall.sh || true
 else
