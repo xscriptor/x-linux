@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# No ejecutarlo durante la build de mkarchiso
+# Dont excecute while building mkarchiso
 grep -q "/run/archiso/bootmnt" /proc/mounts 2>/dev/null || { return 0 2>/dev/null || exit 0; }
 
-# Permitir desactivar
+# Allow deactivate
 [ "${XOS_NO_AUTO:-0}" = "1" ] && { echo "[XOs] Autoinicio desactivado (XOS_NO_AUTO=1)."; return 0 2>/dev/null || exit 0; }
 
-# Solo en TTY1
+# Only on TTY1
 [ "$(tty)" = "/dev/tty1" ] || { return 0 2>/dev/null || exit 0; }
 
 echo
@@ -56,17 +56,18 @@ if [ -n "$TARGET" ] && [ -f "$CONF_PATH" ]; then
   fi
 fi
 
+INSTALL_OK=0
 if [ -f "$CONF_PATH" ]; then
   if [ -f "$CREDS_PATH" ]; then
-    archinstall --config "$CONF_PATH" --creds "$CREDS_PATH"
+    if archinstall --config "$CONF_PATH" --creds "$CREDS_PATH"; then INSTALL_OK=1; fi
   else
-    archinstall --config "$CONF_PATH"
+    if archinstall --config "$CONF_PATH"; then INSTALL_OK=1; fi
   fi
 else
-  archinstall
+  if archinstall; then INSTALL_OK=1; fi
 fi
 
 # Postinstall (branding del sistema instalado)
-if [ -f /root/xos-postinstall.sh ]; then
+if [ "$INSTALL_OK" = "1" ] && [ -f /root/xos-postinstall.sh ]; then
   bash /root/xos-postinstall.sh || true
 fi
