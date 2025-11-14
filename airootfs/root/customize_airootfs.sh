@@ -284,8 +284,18 @@ if [ -f "$CONF_RUN" ]; then
 fi
 
 INSTALL_OK=0
-if archinstall --config user_configuration.json --creds user_credentials.json; then
-  INSTALL_OK=1
+if [ -f "$CONF_RUN" ]; then
+  echo "[XOs] Using config: $CONF_RUN"
+  if [ -f "$CREDS_PATH" ]; then
+    echo "[XOs] Using creds: $CREDS_PATH"
+    if archinstall --config "$CONF_RUN" --creds "$CREDS_PATH"; then INSTALL_OK=1; fi
+  else
+    echo "[XOs] Credentials file not found at $CREDS_PATH, proceeding without creds."
+    if archinstall --config "$CONF_RUN"; then INSTALL_OK=1; fi
+  fi
+else
+  echo "[XOs] No config found, starting interactive Archinstall"
+  if archinstall; then INSTALL_OK=1; fi
 fi
 
 # Postinstall (branding xos)
