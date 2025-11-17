@@ -31,6 +31,6 @@ if [[ "$ISO_COUNT" -gt 0 ]]; then
   find ./out -maxdepth 2 -type f -name '*.iso' -printf ' - %p (%k KB)\n'
 else
   echo "No se encontró ISO en ./out. Revisa el log: $LOG"
-  echo "Suele fallar por: falta de espacio, error en profiledef.sh, o un exit 1 en customize_airootfs.sh."
+  echo "Suele fallar por: falta de espacio, error en profiledef.sh, o un exit 1 en xos-customize.sh."
   exit 2
 fi

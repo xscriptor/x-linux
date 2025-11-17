@@ -33,4 +33,14 @@ fi
 
 if [ "$INSTALL_OK" = "1" ] && [ -f /root/xos-postinstall.sh ]; then
   bash /root/xos-postinstall.sh || true
+  echo
+  echo "──────────────────────────────────────────"
+  echo "Please quit the installation media; the system will reboot."
+  echo "──────────────────────────────────────────"
+  for i in 5 4 3 2 1; do
+    printf "\rRebooting in %s s… " "$i"
+    sleep 1
+  done
+  echo
+  systemctl reboot || reboot || echo "[XOs] Failed to trigger reboot. Please reboot manually."
 fi
