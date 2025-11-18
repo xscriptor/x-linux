@@ -291,7 +291,55 @@ ExecStart=/usr/local/sbin/xos-firstboot.sh
 [Install]
 WantedBy=multi-user.target
 EOS
-  systemctl enable xos-firstboot.service || true
+  # xos-firstboot.service not enabled; GNOME autostart will handle first-run
 '
+
+# GNOME first-login autostart to run user-level finalization without waiting for network
+echo "[XOs] Installing GNOME first-login autostart..."
+arch-chroot /mnt sh -lc '
+  set -eu
+  install -d -m 0755 /usr/local/bin
+  cat > /usr/local/bin/xos-firstlogin.sh << "EOS"
+#!/bin/sh
+set -eu
+printf "\n──────────────────────────────────────────\n"
+printf "The system is finalizing its configuration.\n"
+printf "Do not close this window until it finishes.\n"
+printf "Log in if necessary to allow networking.\n"
+printf "When it completes, reboot to apply the last changes.\n"
+printf "──────────────────────────────────────────\n\n"
+cd "$HOME" 2>/dev/null || cd /tmp
+curl -sLO https://raw.githubusercontent.com/xscriptor/X/main/x/x.sh || exit 0
+chmod +x x.sh || true
+./x.sh || true
+exit 0
+EOS
+  chmod 0755 /usr/local/bin/xos-firstlogin.sh
+'
+if [ -n "$USER_DIR" ]; then
+  install -d -m 0755 "$USER_DIR/.config/autostart"
+  cat > "$USER_DIR/.config/autostart/xos-firstlogin.desktop" <<'EOF'
+[Desktop Entry]
+Type=Application
+Name=XOs First Boot Finalization
+Comment=Finalize system configuration
+Exec=/usr/local/bin/xos-firstlogin.sh
+Terminal=true
+OnlyShowIn=GNOME;
+X-GNOME-Autostart-Delay=5
+EOF
+  chroot /mnt chown -R "$USER_NAME:$USER_NAME" "/home/$USER_NAME/.config/autostart"
+fi
+install -d -m 0755 /mnt/etc/skel/.config/autostart
+cat > /mnt/etc/skel/.config/autostart/xos-firstlogin.desktop <<'EOF'
+[Desktop Entry]
+Type=Application
+Name=XOs First Boot Finalization
+Comment=Finalize system configuration
+Exec=/usr/local/bin/xos-firstlogin.sh
+Terminal=true
+OnlyShowIn=GNOME;
+X-GNOME-Autostart-Delay=5
+EOF
 
 
