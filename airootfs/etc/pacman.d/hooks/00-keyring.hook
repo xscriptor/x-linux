@@ -1,0 +1,11 @@
+[
+Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = archlinux-keyring
+
+[Action]
+Description = Initialize and populate pacman keyring
+When = PreTransaction
+Exec = /usr/bin/bash -c 'pacman-key --init && pacman-key --populate archlinux'
