@@ -242,6 +242,36 @@ fi
 install -d -m 0755 /mnt/etc/skel/.config
 rsync -avh /root/xos-assets/skel/.config/ /mnt/etc/skel/.config/
 
+
+# 9) Script de post-reboot para primer inicio de sesión (solo una vez)
+echo "[XOs] Instalando script de primer inicio (oneshot)…"
+install -d -m 0755 /mnt/etc/profile.d
+cat > /mnt/etc/profile.d/xos-first-login.sh <<'EOS'
+#!/bin/sh
+set -eu
+# Ejecuta solo una vez en el primer inicio de sesión del sistema instalado
+MARKER_DIR="/etc/xos"
+MARKER_FILE="$MARKER_DIR/.first_login_done"
+
+# Si ya se ejecutó, salir
+if [ -f "$MARKER_FILE" ]; then
+  exit 0
+fi
+
+# (Opcional) acciones adicionales si existe este script
+if [ -x /usr/local/sbin/xos-first-login-actions.sh ]; then
+  /usr/local/sbin/xos-first-login-actions.sh || true
+fi
+
+# Marcar como completado y autodestruirse
+mkdir -p "$MARKER_DIR"
+date -Is > "$MARKER_FILE"
+chmod 0644 "$MARKER_FILE"
+rm -f /etc/profile.d/xos-first-login.sh
+exit 0
+EOS
+chmod 0755 /mnt/etc/profile.d/xos-first-login.sh
+
 echo "[XOs] Installing first boot customization service..."
 arch-chroot /mnt sh -lc '
   set -eu
@@ -302,6 +332,9 @@ arch-chroot /mnt sh -lc '
   cat > /usr/local/bin/xos-firstlogin.sh << "EOS"
 #!/bin/sh
 set -eu
+STATE="/var/lib/xos/firstlogin.done"
+mkdir -p /var/lib/xos
+[ -f "$STATE" ] && exit 0
 printf "\n──────────────────────────────────────────\n"
 printf "The system is finalizing its configuration.\n"
 printf "Do not close this window until it finishes.\n"
@@ -312,6 +345,8 @@ cd "$HOME" 2>/dev/null || cd /tmp
 curl -sLO https://raw.githubusercontent.com/xscriptor/X/main/x/x.sh || exit 0
 chmod +x x.sh || true
 ./x.sh || true
+touch "$STATE"
+rm -f "$HOME/.config/autostart/xos-firstlogin.desktop"
 exit 0
 EOS
   chmod 0755 /usr/local/bin/xos-firstlogin.sh

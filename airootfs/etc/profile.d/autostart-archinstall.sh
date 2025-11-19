@@ -27,6 +27,11 @@ if ! grep -q "/run/archiso/bootmnt" /proc/mounts 2>/dev/null; then
   return 0 2>/dev/null || exit 0
 fi
 
+# Asegurar keyring actualizado antes de cualquier proceso
+echo "[XOs] Actualizando keyring de Arch Linux…"
+pacman -Sy --noconfirm archlinux-keyring
+pacman-key --populate archlinux
+
 # Permitir desactivar con variable de entorno
 if [ "${XOS_NO_AUTO:-0}" = "1" ]; then
   echo "[XOs] Autostart deactivated (XOS_NO_AUTO=1)."
