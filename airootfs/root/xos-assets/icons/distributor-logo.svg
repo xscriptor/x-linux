@@ -4,41 +4,31 @@
   height="128"
   viewBox="0 0 512 512"
 >
-  <defs>
-    <!-- Gradiente multicolor -->
-    <linearGradient id="xGradient" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
-      <stop offset="0"    stop-color="#7bd88f"/>  <!-- green -->
-      <stop offset="0.16" stop-color="#fce566"/>  <!-- yellow -->
-      <stop offset="0.33" stop-color="#fd9353"/>  <!-- orange -->
-      <stop offset="0.5"  stop-color="#fc618d"/>  <!-- red -->
-      <stop offset="0.66" stop-color="#5ad4e6"/>  <!-- blue -->
-      <stop offset="0.83" stop-color="#7bd88f"/>  <!-- green -->
-      <stop offset="1"    stop-color="#fce566"/>  <!-- yellow -->
-    </linearGradient>
-  </defs>
 
-  <!-- Círculo exterior -->
-  <circle
-    cx="256"
-    cy="256"
-    r="200"
-    fill="none"
-    stroke="url(#xGradient)"
-    stroke-width="16"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+  <!-- Líneas superiores (más separadas de la X) -->
+  <rect x="156" y="36" width="200" height="10" fill="#fd9353"/> <!-- orange -->
+  <rect x="176" y="60" width="160" height="10" fill="#fc618d"/> <!-- red -->
+
+  <!-- X serif clásica centrada -->
+  <path
+    d="M120 80
+       H200
+       L256 200
+       L312 80
+       H392
+       L296 256
+       L400 432
+       H320
+       L256 312
+       L192 432
+       H112
+       L216 256
+       Z"
+    fill="#D4AF37"
   />
 
-  <!-- Letra "x" estilo Italianno -->
-  <text
-    x="256"
-    y="300"
-    text-anchor="middle"
-    fill="url(#xGradient)"
-    font-family="'Italianno', cursive"
-    font-size="220"
-    font-weight="400"
-  >
-    x
-  </text>
+  <!-- Líneas inferiores (más separadas de la X) -->
+  <rect x="176" y="452" width="160" height="10" fill="#5ad4e6"/> <!-- blue -->
+  <rect x="156" y="476" width="200" height="10" fill="#7bd88f"/> <!-- green -->
+
 </svg>
