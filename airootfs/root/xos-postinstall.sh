@@ -190,6 +190,18 @@ fi
 # (Optional) Show the first entry to verify the name
 arch-chroot /mnt sh -lc 'grep -m1 "^menuentry " /boot/grub/grub.cfg || true'
 
+echo "[XOs] Adjusting systemd-boot titles to 'XOs Linux' if present…"
+arch-chroot /mnt sh -lc '
+  set -eu
+  for d in /boot/loader/entries /efi/loader/entries; do
+    if [ -d "$d" ]; then
+      for f in "$d"/*.conf; do
+        [ -f "$f" ] || continue
+        sed -E -i "s/^(title[[:space:]]+)Arch Linux(.*)$/\1XOs Linux\2/g" "$f" || true
+      done
+    fi
+  done
+'
 
 # 7) Install XOs base tools
 echo "[XOs] Installing base tools (CLI and Dev)..."
@@ -397,5 +409,4 @@ for rc in ".bashrc" ".zshrc"; do
     echo '[ -f "$HOME/.config/xos/first-terminal.rc" ] && . "$HOME/.config/xos/first-terminal.rc"' > "/mnt/etc/skel/$rc"
   fi
 done
-
 
