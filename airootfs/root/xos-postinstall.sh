@@ -81,10 +81,69 @@ EOF
 
 # dconf profiles so defaults from /etc/dconf/db/* apply
 install -d /mnt/etc/dconf/profile
-cat > /mnt/etc/dconf/profile/user <<'EOF'
+cat > /mnt/etc/dconf/profile/gdm <<'EOF'
 user-db:user
-system-db:local
+system-db:gdm
 EOF
+
+echo "[XOs] Desktop branding for installed environments…"
+arch-chroot /mnt sh -lc '
+  set -eu
+  WALL="/usr/share/backgrounds/XOs/'"$WALL"'"
+  LOGO="/usr/share/icons/hicolor/scalable/apps/distributor-logo.svg"
+  if command -v sddm >/dev/null 2>&1; then
+    install -d -m 0755 /etc
+    cat > /etc/sddm.conf <<EOF
+[Theme]
+Current=breeze
+Background=${WALL}
+Logo=${LOGO}
+EOF
+  fi
+  if command -v lightdm >/dev/null 2>&1; then
+    install -d -m 0755 /etc/lightdm
+    cat > /etc/lightdm/lightdm-gtk-greeter.conf <<EOF
+[greeter]
+background=${WALL}
+logo=${LOGO}
+EOF
+  fi
+  if command -v xfce4-session >/dev/null 2>&1; then
+    install -d -m 0755 /etc/xdg/xfce4/xfconf/xfce-perchannel-xml
+    cat > /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<channel name="xfce4-desktop" version="1.0">
+ <property name="backdrop" type="empty">
+  <property name="single-workspace-mode" type="bool" value="true"/>
+  <property name="image-path" type="string" value="${WALL}"/>
+  <property name="image-show" type="bool" value="true"/>
+ </property>
+</channel>
+EOF
+  fi
+  install -d -m 0755 /usr/local/sbin
+  cat > /usr/local/sbin/xos-first-login-actions.sh <<EOF
+#!/bin/sh
+set -eu
+WALL="/usr/share/backgrounds/XOs/'"$WALL"'"
+case "\${XDG_CURRENT_DESKTOP:-}" in
+  *KDE*|*Plasma*)
+    if command -v plasma-apply-wallpaperimage >/dev/null 2>&1; then
+      plasma-apply-wallpaperimage "\$WALL" || :
+    fi
+    ;;
+  *XFCE*)
+    if command -v xfconf-query >/dev/null 2>&1; then
+      xfconf-query -c xfce4-desktop -p /backdrop/single-workspace-mode -s true || :
+      xfconf-query -c xfce4-desktop -p /backdrop/image-show -s true || :
+      xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s "\$WALL" || :
+    fi
+    ;;
+esac
+exit 0
+EOF
+  chmod 0755 /usr/local/sbin/xos-first-login-actions.sh
+'
 cat > /mnt/etc/dconf/profile/gdm <<'EOF'
 user-db:user
 system-db:gdm
@@ -244,6 +303,20 @@ arch-chroot /mnt sh -lc '
 
 echo "[XOs] Applying XOs custom configuration..."
 
+SKEL_SRC="/root/xos-assets/skel/.config"
+TMPDIR="$(mktemp -d)"
+REMOTE_TARBALL="${XOS_REMOTE_SKEL_TARBALL:-https://codeload.github.com/xscriptordev/xos-assets/tar.gz/refs/heads/main}"
+if command -v curl >/dev/null 2>&1; then
+  if curl -fsSL "$REMOTE_TARBALL" -o "$TMPDIR/xos-assets.tar.gz"; then
+    tar -xzf "$TMPDIR/xos-assets.tar.gz" -C "$TMPDIR"
+    REMOTE_ROOT="$(find "$TMPDIR" -maxdepth 2 -type d -name "xos-assets-*" | head -n 1)"
+    if [ -d "$REMOTE_ROOT/skel/.config" ]; then
+      SKEL_SRC="$REMOTE_ROOT/skel/.config"
+      echo "[XOs] Using remote skel from repository."
+    fi
+  fi
+fi
+
 # Detect first real user in /mnt/home
 USER_DIR=$(find /mnt/home -mindepth 1 -maxdepth 1 -type d | head -n 1)
 if [ -n "$USER_DIR" ]; then
@@ -257,9 +330,9 @@ if [ -n "$USER_DIR" ]; then
   install -d -m 0700 "$USER_DIR/.config"
 
   for dir in "${CONFIG_DIRS[@]}"; do
-    if [ -d "/root/xos-assets/skel/.config/$dir" ]; then
+    if [ -d "$SKEL_SRC/$dir" ]; then
       echo "[XOs] → Updating configuration: $dir"
-      rsync -avh /root/xos-assets/skel/.config/$dir/ "$USER_DIR/.config/$dir/"
+      rsync -avh "$SKEL_SRC/$dir/" "$USER_DIR/.config/$dir/"
     fi
   done
 
@@ -271,7 +344,7 @@ fi
 
 # Also copy to /etc/skel (without deleting)
 install -d -m 0755 /mnt/etc/skel/.config
-rsync -avh /root/xos-assets/skel/.config/ /mnt/etc/skel/.config/
+rsync -avh "$SKEL_SRC/" /mnt/etc/skel/.config/
 
 
 # 9) Script de post-reboot para primer inicio de sesión (solo una vez)
@@ -409,4 +482,3 @@ for rc in ".bashrc" ".zshrc"; do
     echo '[ -f "$HOME/.config/xos/first-terminal.rc" ] && . "$HOME/.config/xos/first-terminal.rc"' > "/mnt/etc/skel/$rc"
   fi
 done
-
