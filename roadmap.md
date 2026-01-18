@@ -47,8 +47,8 @@ https://github.com/xscriptordev/xos-repo/releases/download/latest/$arch
 ## Phase 3: Installation Experience
 
 - [x] Archinstall configuration (`user_configuration.json`)
-- [x] Automated installation (`xos-autostart.sh`)
-- [x] Post-install branding (`xos-postinstall.sh`)
+- [x] Automated installation (`x-autostart.sh`)
+- [x] Post-install branding (`x-postinstall.sh`)
 - [ ] Custom installer UI (future)
 - [ ] Welcome app on first boot (future)
 
