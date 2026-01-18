@@ -23,8 +23,8 @@ X/
 ├── packages.x86_64           # Package list for ISO build
 ├── airootfs/                 # Root filesystem (customized ArchISO overlay)
 │   ├── root/
-│   │   ├── X-assets/       # Branding assets dir
-│   │   ├── X-postinstall.sh # Main post-installation script
+│   │   ├── x-assets/       # Branding assets dir
+│   │   ├── x-postinstall.sh # Main post-installation script
 │   │   └── ...
 │   └── ...
 ├── xbuild.sh                 # Automated build script
