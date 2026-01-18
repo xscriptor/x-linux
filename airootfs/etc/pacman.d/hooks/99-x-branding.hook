@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = grub
+
+[Action]
+Description = Configurando GRUB Distributor como XOS...
+When = PostTransaction
+# Cambia la configuración maestra, no el resultado temporal
+Exec = /bin/sh -c "sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR=\"XOS\"/' /etc/default/grub"

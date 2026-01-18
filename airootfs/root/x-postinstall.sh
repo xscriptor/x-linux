@@ -21,8 +21,8 @@ in_chroot() {
 # 1) System Identity (/etc/os-release)
 echo "[XOs] Configuring System Identity..."
 cat > /mnt/etc/os-release <<'EOF'
-NAME="XOs"
-PRETTY_NAME="XOs Linux"
+NAME="X"
+PRETTY_NAME="X"
 ID=xos
 ID_LIKE=arch
 BUILD_ID=rolling
@@ -30,8 +30,8 @@ ANSI_COLOR="0;36"
 HOME_URL="https://dev.xscriptor.com/xos"
 DOCUMENTATION_URL="https://dev.xscriptor.com/xos/docs"
 SUPPORT_URL="https://dev.xscriptor.com/xos/support"
-BUG_REPORT_URL="https://github.com/xscriptordev/XOs"
-LOGO=distributor-logo
+BUG_REPORT_URL="https://github.com/xscriptordev/xos"
+LOGO=xos
 EOF
 
 # 2) Asset Installation
@@ -46,8 +46,6 @@ install -d /mnt/usr/share/icons/hicolor/scalable/apps
 # Wallpaper
 install -d /mnt/usr/share/backgrounds/XOs
 [ -f "$ASSET_DIR/backgrounds/$WALL" ] && install -m 0644 "$ASSET_DIR/backgrounds/$WALL" /mnt/usr/share/backgrounds/XOs/
-
-# 3) Desktop Environment Branding
 
 # GNOME Branding
 if in_chroot "pacman -Qq gnome-shell" >/dev/null 2>&1 || [ -d /mnt/usr/share/gnome-shell ]; then
@@ -217,10 +215,11 @@ echo "[XOs] Configuring Bootloader Branding..."
 # Helper to rename entries
 rename_boot_entries() {
   # systemd-boot
+  # Initial rename
   for d in /mnt/boot/loader/entries /mnt/efi/loader/entries; do
     if [ -d "$d" ]; then
       for f in "$d"/*.conf; do
-        [ -f "$f" ] && sed -i 's/Arch Linux/XOs Linux/g' "$f" || true
+        [ -f "$f" ] && sed -i 's/Arch Linux/X/g' "$f" || true
       done
     fi
   done
@@ -228,7 +227,7 @@ rename_boot_entries() {
   # GRUB
   if [ -f /mnt/etc/default/grub ]; then
     sed -i '/^GRUB_DISTRIBUTOR=/d' /mnt/etc/default/grub
-    echo 'GRUB_DISTRIBUTOR="XOs Linux"' >> /mnt/etc/default/grub
+    echo 'GRUB_DISTRIBUTOR="X"' >> /mnt/etc/default/grub
     
     # Verbose boot
     sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/d' /mnt/etc/default/grub
@@ -239,7 +238,10 @@ rename_boot_entries() {
       in_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
     fi
   fi
+
+
 }
+
 
 rename_boot_entries
 
@@ -283,6 +285,33 @@ mkdir -p "$STATE_DIR"
 printf "\n──────────────────────────────────────────\n"
 printf "   Finalizing XOs Configuration\n"
 printf "──────────────────────────────────────────\n\n"
+
+# Enforce Wallpaper
+WALL="/usr/share/backgrounds/XOs/xos-wallpaper.png"
+DESKTOP="${XDG_CURRENT_DESKTOP:-}"
+
+if [ -f "$WALL" ]; then
+    case "$DESKTOP" in
+        *KDE*)
+            if command -v plasma-apply-wallpaperimage >/dev/null 2>&1; then
+                echo "→ Applying KDE Wallpaper..."
+                plasma-apply-wallpaperimage "$WALL" || true
+            fi
+            ;;
+        *XFCE*)
+            if command -v xfconf-query >/dev/null 2>&1; then
+                echo "→ Applying XFCE Wallpaper..."
+                # Set for all connected monitors on the default channel
+                for property in $(xfconf-query -c xfce4-desktop -l | grep "last-image"); do
+                    xfconf-query -c xfce4-desktop -p "$property" -s "$WALL" || true
+                done
+                for property in $(xfconf-query -c xfce4-desktop -l | grep "image-path"); do
+                    xfconf-query -c xfce4-desktop -p "$property" -s "$WALL" || true
+                done
+            fi
+            ;;
+    esac
+fi
 
 # Wait for internet connection
 printf "Waiting for internet connection..."

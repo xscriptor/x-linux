@@ -210,11 +210,11 @@ else
   echo "[XOs] archinstall failed."
 fi
 
-if [ "$INSTALL_OK" = "1" ] && [ -f /root/xos-postinstall.sh ]; then
+if [ "$INSTALL_OK" = "1" ] && [ -f /root/x-postinstall.sh ]; then
   echo "──────────────────────────────────────────"
   echo "   Running XOs Post-Installation Script"
   echo "──────────────────────────────────────────"
-  bash /root/xos-postinstall.sh || echo "[XOs] Post-install script failed!"
+  bash /root/x-postinstall.sh || echo "[XOs] Post-install script failed!"
   
   echo
   echo "──────────────────────────────────────────"

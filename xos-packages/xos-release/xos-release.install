@@ -1,0 +1,26 @@
+# Post-install/upgrade hooks for xos-release
+
+post_install() {
+    echo ":: XOs branding installed"
+    echo "   - /etc/os-release configured"
+    echo "   - /etc/default/grub configured with GRUB_DISTRIBUTOR=\"X\""
+    
+    # Regenerate GRUB config if grub is installed
+    if command -v grub-mkconfig &>/dev/null && [ -d /boot/grub ]; then
+        echo ":: Regenerating GRUB configuration..."
+        grub-mkconfig -o /boot/grub/grub.cfg 2>/dev/null || true
+    fi
+    
+    # Update systemd-boot entries if they exist
+    for dir in /boot/loader/entries /efi/loader/entries; do
+        if [ -d "$dir" ]; then
+            for f in "$dir"/*.conf; do
+                [ -f "$f" ] && sed -i 's/Arch Linux/X/g' "$f" 2>/dev/null || true
+            done
+        fi
+    done
+}
+
+post_upgrade() {
+    post_install
+}

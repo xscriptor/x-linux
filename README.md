@@ -1,9 +1,6 @@
+<h1 align="center"> X Linux </h1>
 
-
-
-# XOs Linux
-
-**XOs** is a custom Arch Linux spin focused on simplicity, clean X branding, and reproducible builds.  
+**XOs** is a custom Arch Linux–based distribution focused on simplicity, clean X branding, and reproducible builds.  
 This repository contains the full ArchISO profile and post-installation assets used to generate the official XOs ISO image.
 
 > **Project status:** Under active development  
@@ -12,7 +9,7 @@ This repository contains the full ArchISO profile and post-installation assets u
 
 ## Overview
 
-XOs aims to provide a minimal yet polished Arch-based system with its own identity and branding.  
+X aims to provide a minimal yet polished Arch-based system with its own identity and branding.  
 It is built entirely from official Arch repositories, using the standard `mkarchiso` workflow with a custom profile definition and post-install scripts.
 
 ---
@@ -20,15 +17,13 @@ It is built entirely from official Arch repositories, using the standard `mkarch
 ## Project Structure
 
 ```
+
 xos/
 ├── profiledef.sh             # ArchISO profile definition
 ├── pacman.conf               # Custom package configuration
 ├── packages.x86_64           # Package list for ISO build
 ├── airootfs/                 # Root filesystem (customized ArchISO overlay)
 │   ├── root/
-│   │   ├── xos-assets/       # Branding assets dir
-│   │   ├── xos-postinstall.sh # Main post-installation script
-│   │   └── ...
 │   └── ...
 ├── xbuild.sh                 # Automated build script
 ├── x.sh                      # Quick rebuild/clean script
@@ -39,7 +34,7 @@ xos/
 
 ## Building the ISO
 
-To build the XOs ISO image locally, ensure you have `archiso` installed.
+To build the X ISO image locally, ensure you have `archiso` installed.
 
 ```bash
 sudo pacman -S archiso
@@ -62,32 +57,24 @@ Example output:
 
 ```
 out/
-└── XOs-YYYY.MM.DD-x86_64.iso
+└── X-YYYY.MM.DD-x86_64.iso
 ```
 
 ---
 
 ## Post-installation Customization
 
-XOs uses a **post-install script** to apply branding and configurations.  
-**Important:** This script must be run **immediately after installing Arch (via `archinstall` or manually) but BEFORE rebooting**, while your new system is still mounted at `/mnt`.
-
-1.  Run `archinstall` and complete the installation (do **not** reboot yet).
-2.  Exit `archinstall` to the shell.
-3.  Execute the post-install script located in `/root`:
+After installing Arch via the generated ISO, execute the **XOs post-install script** to apply full system branding and configuration.
 
 ```bash
-/root/xos-postinstall.sh
+sudo /root/xos-assets/xos-postinstall.sh
 ```
 
 This script will:
 
-*   Configure `/etc/os-release` (identity).
-*   Install wallpapers, logos, and branding for GNOME/KDE/XFCE.
-*   Setup initial user configurations (skel).
-*   Customize the bootloader (GRUB/systemd-boot).
-
-Once finished, you can safe reboot into your new XOs system.
+* Rewrites `/etc/os-release` to identify the system as XOs Linux.
+* Installs wallpapers, logos, and GDM/GNOME branding.
+* Sets up post-install hooks and environment adjustments.
 
 ---
 

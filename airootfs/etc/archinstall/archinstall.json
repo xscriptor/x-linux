@@ -3,7 +3,9 @@
   "archinstall-language": "English",
   "hostname": "xos",
   "bootloader": "grub",
-  "kernels": ["linux"],
+  "kernels": [
+    "linux"
+  ],
   "locale_config": {
     "kb_layout": "es",
     "sys_lang": "es_ES",
@@ -11,11 +13,9 @@
   },
   "timezone": "Europe/Madrid",
   "ntp": true,
-
   "profile_config": {
     "profile": "gnome"
   },
-
   "packages": [
     "gnome-tweaks",
     "papirus-icon-theme",
@@ -33,7 +33,6 @@
     "kitty",
     "networkmanager"
   ],
-
   "disk_config": {
     "config_type": "default_layout",
     "device_modifications": [
@@ -43,12 +42,14 @@
       }
     ]
   },
-
   "custom_commands": [
     "systemctl enable gdm.service",
-    "systemctl enable NetworkManager.service"
+    "systemctl enable NetworkManager.service",
+    "printf 'NAME=\"X\"\\nPRETTY_NAME=\"X\"\\nID=xos\\nID_LIKE=arch\\nBUILD_ID=rolling\\nANSI_COLOR=\"0;36\"\\nHOME_URL=\"https://dev.xscriptor.com/xos\"\\nDOCUMENTATION_URL=\"https://dev.xscriptor.com/xos/docs\"\\nSUPPORT_URL=\"https://dev.xscriptor.com/xos/support\"\\nBUG_REPORT_URL=\"https://github.com/xscriptordev/xos\"\\nLOGO=xos\\n' > /etc/os-release",
+    "sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR=\"X\"/' /etc/default/grub || echo 'GRUB_DISTRIBUTOR=\"X\"' >> /etc/default/grub",
+    "for f in /boot/loader/entries/*.conf /efi/loader/entries/*.conf; do [ -f \"$f\" ] && sed -i 's/Arch Linux/X/g' \"$f\"; done || true",
+    "grub-mkconfig -o /boot/grub/grub.cfg || true"
   ],
-
   "swap": true,
   "script": "guided",
   "silent": false,

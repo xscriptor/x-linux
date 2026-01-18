@@ -1,5 +1,5 @@
-NAME="XOs"
-PRETTY_NAME="X Os"
+NAME="X"
+PRETTY_NAME="X"
 ID=xos
 ID_LIKE=arch
 BUILD_ID=rolling
@@ -7,5 +7,5 @@ ANSI_COLOR="0;36"
 HOME_URL="https://dev.xscriptor.com/xos"
 DOCUMENTATION_URL="https://dev.xscriptor.com/xos/docs"
 SUPPORT_URL="https://dev.xscriptor.com/xos/support"
-BUG_REPORT_URL="https://github.com/xscriptordev/XOs"
+BUG_REPORT_URL="https://github.com/xscriptordev/xos"
 LOGO=xos

@@ -8,6 +8,6 @@ if [ -x /root/.automated_script.sh ]; then
 fi
 
 # Run XOs Autostart (Fallback/Default)
-if [ -f /root/xos-autostart.sh ]; then
-    bash /root/xos-autostart.sh
+if [ -f /root/x-autostart.sh ]; then
+    bash /root/x-autostart.sh
 fi

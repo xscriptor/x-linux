@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = filesystem
+
+[Action]
+Description = Reescribiendo identidad XOS en os-release...
+When = PostTransaction
+# Usamos printf para escribir el archivo completo de cero. Es más seguro.
+Exec = /bin/sh -c "printf 'NAME=\"X\"\nPRETTY_NAME=\"X\"\nID=xos\nID_LIKE=arch\nBUILD_ID=rolling\nANSI_COLOR=\"0;36\"\nHOME_URL=\"https://dev.xscriptor.com/xos\"\nDOCUMENTATION_URL=\"https://dev.xscriptor.com/xos/docs\"\nSUPPORT_URL=\"https://dev.xscriptor.com/xos/support\"\nBUG_REPORT_URL=\"https://github.com/xscriptordev/xos\"\nLOGO=xos\n' > /etc/os-release"
