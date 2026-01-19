@@ -1,7 +1,7 @@
-# Post-install/upgrade hooks for xos-release
+# Post-install/upgrade hooks for x-release
 
 post_install() {
-    echo ":: XOs branding installed"
+    echo ":: X branding installed"
     echo "   - /etc/os-release configured"
     echo "   - /etc/default/grub configured with GRUB_DISTRIBUTOR=\"X\""
     

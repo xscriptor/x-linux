@@ -1,13 +1,13 @@
 # Maintainer: Xscriptor <dev@xscriptor.com>
-pkgname=xos-release
+pkgname=x-release
 pkgver=1.0
 pkgrel=1
-pkgdesc="XOs Linux identity and branding files"
+pkgdesc="X Linux identity and branding files"
 arch=('any')
-url="https://dev.xscriptor.com/xos"
+url="https://dev.xscriptor.com/x"
 license=('MIT')
 backup=('etc/os-release' 'etc/default/grub')
-install=xos-release.install
+install=x-release.install
 # No dependencies - this is a base package
 
 package() {
@@ -15,20 +15,20 @@ package() {
     install -Dm644 /dev/stdin "$pkgdir/etc/os-release" <<'EOF'
 NAME="X"
 PRETTY_NAME="X"
-ID=xos
+ID=x
 ID_LIKE=arch
 BUILD_ID=rolling
 ANSI_COLOR="0;36"
-HOME_URL="https://dev.xscriptor.com/xos"
-DOCUMENTATION_URL="https://dev.xscriptor.com/xos/docs"
-SUPPORT_URL="https://dev.xscriptor.com/xos/support"
-BUG_REPORT_URL="https://github.com/xscriptordev/xos"
-LOGO=xos
+HOME_URL="https://dev.xscriptor.com/x"
+DOCUMENTATION_URL="https://dev.xscriptor.com/x/docs"
+SUPPORT_URL="https://dev.xscriptor.com/x/support"
+BUG_REPORT_URL="https://github.com/xscriptor/x-linux"
+LOGO=x
 EOF
 
     # /etc/default/grub - GRUB configuration with X branding
     install -Dm644 /dev/stdin "$pkgdir/etc/default/grub" <<'EOF'
-# GRUB boot loader configuration - XOs
+# GRUB boot loader configuration - X
 GRUB_DEFAULT=0
 GRUB_TIMEOUT=5
 GRUB_DISTRIBUTOR="X"
