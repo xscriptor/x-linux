@@ -5,7 +5,7 @@ Type = Package
 Target = grub
 
 [Action]
-Description = Configurando GRUB Distributor como XOS...
+Description = Configurando GRUB Distributor como x...
 When = PostTransaction
 # Cambia la configuración maestra, no el resultado temporal
-Exec = /bin/sh -c "sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR=\"XOS\"/' /etc/default/grub"
+Exec = /bin/sh -c "sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR=\"x\"/' /etc/default/grub"

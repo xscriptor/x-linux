@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Enable debug if requested
-[ "${XOS_DEBUG:-0}" = "1" ] && set -x
+[ "${x_DEBUG:-0}" = "1" ] && set -x
 
 # 1. Environment Check
 # On real hardware, devices might take a moment.
@@ -17,21 +17,21 @@ if grep -q "/run/archiso/bootmnt" /proc/mounts 2>/dev/null; then IS_LIVE=1; fi
 if [ -d /run/archiso/airootfs ]; then IS_LIVE=1; fi
 if grep -Eq 'archisobasedir=|archisosearchuuid=|script=' /proc/cmdline; then IS_LIVE=1; fi
 
-[ "${XOS_NO_AUTO:-0}" = "1" ] && { echo "[XOs] Autostart disabled (XOS_NO_AUTO=1)."; exit 0; }
+[ "${x_NO_AUTO:-0}" = "1" ] && { echo "[x] Autostart disabled (x_NO_AUTO=1)."; exit 0; }
 
-if [ "$IS_LIVE" = "0" ] && [ "${XOS_FORCE:-0}" != "1" ]; then
+if [ "$IS_LIVE" = "0" ] && [ "${x_FORCE:-0}" != "1" ]; then
   # Not a live environment and not forced -> Exit silently
   exit 0
 fi
 
 # TTY Check: Only run on tty1 to avoid running in background ssh/other terminals
-if [ "$(tty)" != "/dev/tty1" ] && [ "${XOS_FORCE:-0}" != "1" ]; then
+if [ "$(tty)" != "/dev/tty1" ] && [ "${x_FORCE:-0}" != "1" ]; then
   exit 0
 fi
 
 echo
 echo "──────────────────────────────────────────"
-echo "   XOs Live – Archinstall will start in 5s"
+echo "   x Live – Archinstall will start in 5s"
 echo "   Press Ctrl+C to cancel."
 echo "──────────────────────────────────────────"
 for i in 5 4 3 2 1; do
@@ -43,7 +43,7 @@ echo "→ Starting archinstall (Automated with config)…"
 echo
 
 # 2. Wait for Network (Crucial for archinstall)
-echo "[XOs] Checking internet connection..."
+echo "[x] Checking internet connection..."
 MAX_RETRIES=30
 count=0
 while ! ping -c 1 -W 1 8.8.8.8 >/dev/null 2>&1; do
@@ -52,12 +52,12 @@ while ! ping -c 1 -W 1 8.8.8.8 >/dev/null 2>&1; do
   count=$((count+1))
   if [ "$count" -ge "$MAX_RETRIES" ]; then
     echo
-    echo "[XOs] Warning: No internet connection detected. Installation might fail."
+    echo "[x] Warning: No internet connection detected. Installation might fail."
     break
   fi
 done
 echo
-echo "[XOs] Network ready."
+echo "[x] Network ready."
 
 CONF_PATH="/root/user_configuration.json"
 CREDS_PATH="/root/user_credentials.json"
@@ -93,11 +93,11 @@ prepare_effective_config() {
   
   target="$(pick_target_disk)"
   if [ -z "$target" ]; then
-    echo "[XOs] Error: No suitable target disk found!" >&2
+    echo "[x] Error: No suitable target disk found!" >&2
     return 1
   fi
   
-  echo "[XOs] Selected target disk: $target" >&2
+  echo "[x] Selected target disk: $target" >&2
   
   size_b="$(lsblk -b -dn -o SIZE "$target" 2>/dev/null || echo 0)"
   size_mb=$(( size_b / (1024*1024) ))
@@ -112,7 +112,7 @@ prepare_effective_config() {
   root_size_mib=$(( size_mb - root_start_mib - 5 ))
   
   if [ "$root_size_mib" -lt 4096 ]; then
-    echo "[XOs] Error: Target disk too small (< 4GB)." >&2
+    echo "[x] Error: Target disk too small (< 4GB)." >&2
     return 1
   fi
   
@@ -183,38 +183,38 @@ PY
 }
 
 INSTALL_OK=0
-echo "[XOs] Using config template: $CONF_PATH"
+echo "[x] Using config template: $CONF_PATH"
 
 # Prepare the effective configuration (Disk selection + JSON patch)
 ECFG="$(prepare_effective_config || true)"
 
 if [ -z "$ECFG" ] || [ ! -f "$ECFG" ]; then
-    echo "[XOs] Failed to generate effective configuration. Falling back to default (risky)."
+    echo "[x] Failed to generate effective configuration. Falling back to default (risky)."
     ECFG="$CONF_PATH"
 else
-    echo "[XOs] Generated effective config: $ECFG"
+    echo "[x] Generated effective config: $ECFG"
 fi
 
 ARGS="--config $ECFG"
 if [ -f "$CREDS_PATH" ]; then
-  echo "[XOs] Using credentials: $CREDS_PATH"
+  echo "[x] Using credentials: $CREDS_PATH"
   ARGS="$ARGS --creds $CREDS_PATH"
 else
-  echo "[XOs] No credentials file found. You will be prompted for passwords."
+  echo "[x] No credentials file found. You will be prompted for passwords."
 fi
 
 # Run archinstall
 if archinstall $ARGS; then
   INSTALL_OK=1
 else
-  echo "[XOs] archinstall failed."
+  echo "[x] archinstall failed."
 fi
 
 if [ "$INSTALL_OK" = "1" ] && [ -f /root/x-postinstall.sh ]; then
   echo "──────────────────────────────────────────"
-  echo "   Running XOs Post-Installation Script"
+  echo "   Running x Post-Installation Script"
   echo "──────────────────────────────────────────"
-  bash /root/x-postinstall.sh || echo "[XOs] Post-install script failed!"
+  bash /root/x-postinstall.sh || echo "[x] Post-install script failed!"
   
   echo
   echo "──────────────────────────────────────────"
@@ -225,5 +225,5 @@ if [ "$INSTALL_OK" = "1" ] && [ -f /root/x-postinstall.sh ]; then
     sleep 1
   done
   echo
-  systemctl reboot || reboot || echo "[XOs] Please reboot manually."
+  systemctl reboot || reboot || echo "[x] Please reboot manually."
 fi

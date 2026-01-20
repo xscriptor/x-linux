@@ -7,7 +7,7 @@ if [ -x /root/.automated_script.sh ]; then
     /root/.automated_script.sh
 fi
 
-# Run XOs Autostart (Fallback/Default)
+# Run x Autostart (Fallback/Default)
 if [ -f /root/x-autostart.sh ]; then
     bash /root/x-autostart.sh
 fi

@@ -1,5 +1,5 @@
 # ────────────────────────────────────────────────
-# XOs Linux — .gitignore para build ArchISO
+# x Linux — .gitignore para build ArchISO
 # ────────────────────────────────────────────────
 
 # ── Directorios de build ─────────────────────────
@@ -76,14 +76,14 @@ build/
 Thumbs.db
 desktop.ini
 
-# ── Exclusiones específicas de XOs ───────────────
+# ── Exclusiones específicas de x ───────────────
 # Todo lo de rebranding se mantiene
-!root/xos-assets/**
-!root/xos-assets/**/*.sh
-!root/xos-assets/**/*.svg
-!root/xos-assets/**/*.png
-!root/xos-assets/**/*.conf
-!root/xos-assets/**/*.service
+!root/x-assets/**
+!root/x-assets/**/*.sh
+!root/x-assets/**/*.svg
+!root/x-assets/**/*.png
+!root/x-assets/**/*.conf
+!root/x-assets/**/*.service
 
 # Archivos del perfil ArchISO
 !profiledef.sh

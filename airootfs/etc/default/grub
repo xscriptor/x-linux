@@ -1,4 +1,4 @@
-# GRUB boot loader configuration - XOs
+# GRUB boot loader configuration - x
 # See /usr/share/doc/grub/grub.html for full documentation.
 
 GRUB_DEFAULT=0

@@ -23,22 +23,22 @@ A comprehensive roadmap for completing the X Linux distribution based on Arch.
 
 | Option | URL Format |
 |--------|------------|
-| GitHub Releases | `https://github.com/xscriptordev/xos-repo/releases/download/latest/$arch` |
-| Custom Server | `https://repo.xscriptor.com/xos/$arch` |
-| GitLab Pages | `https://xscriptordev.gitlab.io/xos-repo/$arch` |
+| GitHub Releases | `https://github.com/xscriptordev/x-repo/releases/download/latest/$arch` |
+| Custom Server | `https://repo.xscriptor.com/x/$arch` |
+| GitLab Pages | `https://xscriptordev.gitlab.io/x-repo/$arch` |
 
 **Current setting** in `pacman.conf`:
 ```
-https://github.com/xscriptordev/xos-repo/releases/download/latest/$arch
+https://github.com/xscriptordev/x-repo/releases/download/latest/$arch
 ```
 
 ### 2.2 Package Tasks
 
-- [x] Create `xos-release` PKGBUILD
+- [x] Create `x-release` PKGBUILD
 - [x] Create install hooks
 - [x] Add repository to `pacman.conf`
 - [ ] Build package with `./build-repo.sh`
-- [ ] Create `xos-repo` repository on GitHub
+- [ ] Create `x-repo` repository on GitHub
 - [ ] Upload package files to GitHub Releases (tag: `latest`)
 - [ ] Test ISO build with package
 
@@ -67,7 +67,7 @@ https://github.com/xscriptordev/xos-repo/releases/download/latest/$arch
 
 ## Phase 5: Documentation & Website
 
-- [ ] Landing page at `dev.xscriptor.com/xos`
+- [ ] Landing page at `dev.xscriptor.com/x`
 - [ ] Installation guide
 - [ ] FAQ / Troubleshooting
 - [ ] Release notes template
@@ -86,12 +86,12 @@ https://github.com/xscriptordev/xos-repo/releases/download/latest/$arch
 ## Quick Start Commands
 
 ```bash
-# Build the xos-release package
-cd xos-packages
+# Build the x-release package
+cd x-packages
 ./build-repo.sh
 
 # Build the ISO
-cd /home/x/Documents/repos/xscriptordev/xos
+cd /home/x/Documents/repos/xscriptordev/x
 ./xbuild.sh
 ```
 
@@ -102,8 +102,8 @@ cd /home/x/Documents/repos/xscriptordev/xos
 | File | Purpose |
 |------|---------|
 | `profiledef.sh` | ISO metadata and build settings |
-| `pacman.conf` | Package manager configuration with XOs repo |
+| `pacman.conf` | Package manager configuration with x repo |
 | `packages.x86_64` | Packages included in the ISO |
 | `airootfs/etc/os-release` | System identity |
 | `airootfs/etc/default/grub` | GRUB configuration |
-| `xos-packages/xos-release/` | Custom branding package |
+| `x-packages/x-release/` | Custom branding package |
