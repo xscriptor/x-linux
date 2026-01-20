@@ -4,7 +4,6 @@ arch-install-scripts
 archinstall
 b43-fwcutter
 base
-xos-release
 bcachefs-tools
 bind
 bolt
