@@ -71,6 +71,18 @@ out/
 
 ---
 
+## Build for WSL (Windows Subsystem for Linux)
+
+To create a tarball compatible with WSL:
+
+```bash
+sudo ./xbuildwsl.sh
+```
+
+This will produce `out-wsl/x-wsl-YYYY.MM.DD.tar.gz`. For instructions on how to import and use this in Windows, see [WSL_GUIDE.md](./WSL_GUIDE.md).
+
+---
+
 ## Post-installation Customization (optional)
 
 X uses a custom repository to manage branding and configurations automatically.
