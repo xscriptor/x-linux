@@ -87,9 +87,16 @@ if [ -f "$ROOTFS_DIR/root/customize_airootfs.sh" ]; then
     sudo arch-chroot "$ROOTFS_DIR" /root/customize_airootfs.sh
 fi
 
-# 8. Create Tarball
+# 8. Optimization (Clean Cache)
+log "Cleaning pacman cache to reduce size..."
+# Clean package cache and unused repos to save space
+sudo arch-chroot "$ROOTFS_DIR" /bin/bash -c "yes | pacman -Scc"
+
+# 9. Create Tarball
 log "Creating WSL tarball: $OUTPUT_TAR"
-sudo tar -czf "$OUTPUT_TAR" -C "$ROOTFS_DIR" .
+log "Using gzip -9 for maximum compression (this may take a while)..."
+# Use pipe to gzip -9 for max compression
+sudo tar -C "$ROOTFS_DIR" -c . | gzip -9 > "$OUTPUT_TAR"
 
 log "Done! WSL Image created at: $OUTPUT_TAR"
 log "You can import this into WSL using PowerShell:"
