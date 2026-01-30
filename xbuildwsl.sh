@@ -63,6 +63,7 @@ sudo cp "${PACMAN_CONF}" "$ROOTFS_DIR/etc/pacman.conf"
 # 6. Apply Permissions (from profiledef.sh)
 log "Applying file permissions from profiledef.sh..."
 (
+    declare -A file_permissions
     source "${PROFILE_DIR}/profiledef.sh"
     for file in "${!file_permissions[@]}"; do
         perm_string="${file_permissions[$file]}"
