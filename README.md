@@ -79,7 +79,7 @@ To create a tarball compatible with WSL:
 sudo ./xbuildwsl.sh
 ```
 
-This will produce `out-wsl/x-wsl-YYYY.MM.DD.tar.gz`. For instructions on how to import and use this in Windows, see [WSL_GUIDE.md](./WSL_GUIDE.md).
+This will produce `out-wsl/x-YYYY.MM.DD.tar.gz`. For instructions on how to import and use this in Windows, see [WSL_GUIDE.md](./WSL_GUIDE.md).
 
 ---
 

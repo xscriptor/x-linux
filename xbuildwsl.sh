@@ -11,7 +11,7 @@ PACKAGES_FILE="${PROFILE_DIR}/packages.x86_64"
 
 # Date for versioning
 DATE_TAG="$(date +%Y.%m.%d)"
-OUTPUT_TAR="${OUT_DIR}/x-wsl-${DATE_TAG}.tar.gz"
+OUTPUT_TAR="${OUT_DIR}/x-${DATE_TAG}.tar.gz"
 
 # Colors
 GREEN='\033[0;32m'
@@ -50,7 +50,8 @@ PACKAGES=$(grep -vE '^\s*#' "$PACKAGES_FILE" | tr '\n' ' ')
 
 # 4. Bootstrap (Install Base System)
 log "Installing packages via pacstrap..."
-sudo pacstrap -C "$PACMAN_CONF" -c -G -M "$ROOTFS_DIR" base $PACKAGES
+# Remove -M to allowing copying host mirrorlist so repos work inside
+sudo pacstrap -C "$PACMAN_CONF" -c -G "$ROOTFS_DIR" base $PACKAGES
 
 # 5. Copy Custom Files (airootfs)
 log "Copying airootfs configuration..."
@@ -59,6 +60,8 @@ sudo cp -r "${PROFILE_DIR}/airootfs/"* "$ROOTFS_DIR/"
 # 5b. Copy pacman.conf to preserve custom repos (e.g. [x] repo)
 log "Copying custom pacman.conf to target..."
 sudo cp "${PACMAN_CONF}" "$ROOTFS_DIR/etc/pacman.conf"
+sudo chown root:root "$ROOTFS_DIR/etc/pacman.conf"
+sudo chmod 644 "$ROOTFS_DIR/etc/pacman.conf"
 
 # 6. Apply Permissions (from profiledef.sh)
 log "Applying file permissions from profiledef.sh..."
@@ -89,8 +92,10 @@ fi
 
 # 8. Optimization (Clean Cache)
 log "Cleaning pacman cache to reduce size..."
-# Clean package cache and unused repos to save space
-sudo arch-chroot "$ROOTFS_DIR" /bin/bash -c "yes | pacman -Scc"
+# Manually remove cache files to be absolutely sure
+sudo rm -rf "$ROOTFS_DIR/var/cache/pacman/pkg/"*
+# Optionally remove sync dbs if desired, but keeping them (commented out) so pacman works immediately
+# sudo rm -rf "$ROOTFS_DIR/var/lib/pacman/sync/"*
 
 # 9. Create Tarball
 log "Creating WSL tarball: $OUTPUT_TAR"
@@ -100,5 +105,5 @@ sudo tar -C "$ROOTFS_DIR" -c . | gzip -9 > "$OUTPUT_TAR"
 
 log "Done! WSL Image created at: $OUTPUT_TAR"
 log "You can import this into WSL using PowerShell:"
-log "wsl --import x-linux C:\\WSL\\x-linux $(ls $OUTPUT_TAR)"
+log "wsl --import x C:\\WSL\\x $(ls $OUTPUT_TAR)"
 

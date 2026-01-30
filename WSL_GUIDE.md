@@ -17,7 +17,7 @@ chmod +x xbuildwsl.sh
 sudo ./xbuildwsl.sh
 ```
 
-This will create the file `out-wsl/x-wsl-YYYY.MM.DD.tar.gz`.
+This will create the file `out-wsl/x-YYYY.MM.DD.tar.gz`.
 
 ## 2. Copy the Image to Windows
 
@@ -29,10 +29,10 @@ Open **PowerShell** or **Command Prompt** as Administrator and run the following
 
 ```powershell
 # Usage: wsl --import <DistroName> <InstallLocation> <PathToTarball>
-wsl --import x-linux C:\WSL\x-linux C:\Users\YourUser\Downloads\x-wsl-2024.10.01.tar.gz
+wsl --import x C:\WSL\x C:\Users\YourUser\Downloads\x-2024.10.01.tar.gz
 ```
 
-*   **<DistroName>**: Name you want to give the distro (e.g., `x-linux`).
+*   **<DistroName>**: Name you want to give the distro (e.g., `x`).
 *   **<InstallLocation>**: Disk path where the VHDX file will be stored.
 *   **<PathToTarball>**: Path to the `.tar.gz` file you built (check the exact date in the filename).
 
