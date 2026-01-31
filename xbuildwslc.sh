@@ -105,7 +105,13 @@ sudo rm -rf "$ROOTFS_DIR/var/cache/pacman/pkg/"*
 log "Creating WSL tarball: $OUTPUT_TAR"
 log "Using zstd -19 --long for maximum compression (this may take a while)..."
 # Use pipe to zstd for max compression
-sudo tar -C "$ROOTFS_DIR" -c . | zstd -T0 -19 --long -o "$OUTPUT_TAR"
+sudo tar -C "$ROOTFS_DIR" \
+    --exclude='./root/.automated_script.sh' \
+    --exclude='./root/user_configuration.json' \
+    --exclude='./root/user_credentials.json' \
+    --exclude='./root/x-autostart.sh' \
+    --exclude='./root/x-postinstall.sh' \
+    -c . | zstd -T0 -19 --long -o "$OUTPUT_TAR"
 
 log "Done! WSL Image created at: $OUTPUT_TAR"
 log "You can import this into WSL. See instructions in WSL_GUIDE.md"
