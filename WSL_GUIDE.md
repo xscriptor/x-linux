@@ -17,7 +17,7 @@ chmod +x xbuildwsl.sh
 sudo ./xbuildwsl.sh
 ```
 
-This will create the file `out-wsl/x-YYYY.MM.DD.tar.gz`.
+This will create the file `out-wsl/x-YYYY.MM.DD.tar.zst`.
 
 ## 2. Copy the Image to Windows
 
@@ -25,16 +25,29 @@ Move the tarball to a location accessible by Windows (e.g., `C:\Users\YourUser\D
 
 ## 3. Import into WSL
 
-Open **PowerShell** or **Command Prompt** as Administrator and run the following command:
+The built image is compressed with **Zstandard (.tar.zst)** for better compression. WSL does not support importing `.tar.zst` files directly. You need to decompress it first or pipe the content.
 
-```powershell
-# Usage: wsl --import <DistroName> <InstallLocation> <PathToTarball>
-wsl --import x C:\WSL\x C:\Users\YourUser\Downloads\x-2024.10.01.tar.gz
-```
+### Option A: Decompress First (Recommended)
+
+1.  **Decompress** the file using a tool like [7-Zip](https://www.7-zip.org/) or `zstd` command line on Windows:
+    ```powershell
+    zstd -d x-2024.10.01.tar.zst
+    ```
+    This will produce `x-2024.10.01.tar`.
+
+2.  **Import** the `.tar` file:
+    ```powershell
+    # Usage: wsl --import <DistroName> <InstallLocation> <PathToTarball>
+    wsl --import x C:\WSL\x C:\Users\YourUser\Downloads\x-2024.10.01.tar
+    ```
+
+### Option B: Pipe Import (Advanced)
+
+If you have `zstd` installed in another WSL distro or Windows, you *might* be able to pipe it, but Option A is safer.
 
 *   **<DistroName>**: Name you want to give the distro (e.g., `x`).
 *   **<InstallLocation>**: Disk path where the VHDX file will be stored.
-*   **<PathToTarball>**: Path to the `.tar.gz` file you built (check the exact date in the filename).
+*   **<PathToTarball>**: Path to the `.tar` file (after decompression).
 
 ## 4. Run X Linux
 
