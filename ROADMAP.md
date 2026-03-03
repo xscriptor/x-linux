@@ -6,64 +6,64 @@ A comprehensive roadmap for the X Linux distribution, an Arch-based spin with it
 
 ## Phase 1: Branding & Identity <!-- phase:branding -->
 
-- [x] System identity (`/etc/os-release`)
-- [x] GRUB distributor name (`GRUB_DISTRIBUTOR="X"`)
-- [x] Bootloader menu entries (GRUB, systemd-boot, syslinux)
-- [x] Fastfetch configuration
-- [x] ISO profile (`profiledef.sh`)
-- [x] MOTD (Message of the Day)
+- [x] System identity (`/etc/os-release`) (#1)
+- [x] GRUB distributor name (`GRUB_DISTRIBUTOR="X"`) (#2)
+- [x] Bootloader menu entries (GRUB, systemd-boot, syslinux) (#3)
+- [x] Fastfetch configuration (#4)
+- [x] ISO profile (`profiledef.sh`) (#5)
+- [x] MOTD (Message of the Day) (#6)
 
 ---
 
 ## Phase 2: Package Repository <!-- phase:package-repo -->
 
-- [x] Create `x-release` PKGBUILD
-- [x] Create install hooks
-- [x] Add repository to `pacman.conf`
-- [ ] Build package with `./build-repo.sh`
-- [ ] Create `x-repo` repository on GitHub
-- [ ] Upload package files to GitHub Releases (tag: `latest`)
-- [ ] Test ISO build with package
-- [ ] Migrate additional tools to the x repository
+- [x] Create `x-release` PKGBUILD (#7)
+- [x] Create install hooks (#8)
+- [x] Add repository to `pacman.conf` (#9)
+- [ ] Build package with `./build-repo.sh` (#10)
+- [ ] Create `x-repo` repository on GitHub (#11)
+- [ ] Upload package files to GitHub Releases (tag: `latest`) (#12)
+- [ ] Test ISO build with package (#13)
+- [ ] Migrate additional tools to the x repository (#14)
 
 ---
 
 ## Phase 3: Installation Experience <!-- phase:installation -->
 
-- [x] Archinstall configuration (`user_configuration.json`)
-- [x] Automated installation (`x-autostart.sh`)
-- [x] Post-install branding (`x-postinstall.sh`)
-- [ ] Custom installer UI (future)
-- [ ] Welcome app on first boot (future)
+- [x] Archinstall configuration (`user_configuration.json`) (#15)
+- [x] Automated installation (`x-autostart.sh`) (#16)
+- [x] Post-install branding (`x-postinstall.sh`) (#17)
+- [ ] Custom installer UI (future) (#18)
+- [ ] Welcome app on first boot (future) (#19)
 
 ---
 
 ## Phase 4: Desktop Environment <!-- phase:desktop-env -->
 
-- [x] GNOME branding (wallpaper, GDM logo)
-- [x] KDE Plasma branding
-- [x] XFCE branding
-- [x] Display manager configuration (GDM, SDDM, LightDM)
-- [ ] Custom theme/icons (future)
-- [ ] Default application configuration
+- [x] GNOME branding (wallpaper, GDM logo) (#20)
+- [x] KDE Plasma branding (#21)
+- [x] XFCE branding (#22)
+- [x] Display manager configuration (GDM, SDDM, LightDM) (#23)
+- [ ] Custom theme/icons (future) (#24)
+- [ ] Default application configuration (#25)
 
 ---
 
 ## Phase 5: Documentation & Website <!-- phase:docs -->
 
-- [ ] Landing page at `dev.xscriptor.com/x`
-- [ ] Installation guide
-- [ ] FAQ / Troubleshooting
-- [ ] Release notes template
+- [ ] Landing page at `dev.xscriptor.com/x` (#26)
+- [ ] Installation guide (#27)
+- [ ] FAQ / Troubleshooting (#28)
+- [ ] Release notes template (#29)
 
 ---
 
 ## Phase 6: Release Pipeline <!-- phase:release -->
 
-- [ ] Automated ISO builds (GitHub Actions / GitLab CI)
-- [ ] Package signing with GPG
-- [ ] Release versioning strategy
-- [ ] Mirror setup (optional)
+- [ ] Automated ISO builds (GitHub Actions / GitLab CI) (#30)
+- [ ] Package signing with GPG (#31)
+- [ ] Release versioning strategy (#32)
+- [ ] Mirror setup (optional) (#33)
 
 ---
 
