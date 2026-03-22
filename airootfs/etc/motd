@@ -10,19 +10,10 @@ Website:
 https://dev.xscriptor.com/x
 
 Source code:
-https://github.com/xscriptordev/x
-
-Installer:
-Archinstall
-
-Base system:
-Arch Linux, customized through archiso framework.
-
-Description:
-This ISO provides the live environment installer for x.
+https://github.com/xscriptor/x-linux
 
 Report issues:
-https://github.com/xscriptor/x
+https://github.com/xscriptor/x-linux
 
 --------------------------------------------
 Welcome to x — Live environment starting now...
