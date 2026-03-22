@@ -1,7 +1,7 @@
 <h1 align="center"> X Linux </h1>
 
 **X** is a custom Arch Linux spin focused on simplicity, clean branding, and reproducible builds.  
-It ships its own package repository ([x-repo](https://github.com/xscriptordev/x-repo)) so you can install X-specific packages directly with `pacman`, and more tools will be migrated there over time.
+It ships its own package repository ([x-repo](https://github.com/xscriptor/x-repo)) so you can install X-specific packages directly with `pacman`, and more tools will be migrated there over time.
 
 > **Project status:** Under active development  
 
@@ -147,7 +147,7 @@ This configures `/etc/os-release`, wallpapers, logos, and bootloader entries for
 ### Developer Resources
 
 For additional automation scripts and tools, visit:  
-[https://github.com/xscriptordev/x](https://github.com/xscriptordev/x)
+[https://github.com/xscriptor/x](https://github.com/xscriptor/x)
 
 ---
 

@@ -7,5 +7,5 @@ ANSI_COLOR="0;36"
 HOME_URL="https://dev.xscriptor.com/x"
 DOCUMENTATION_URL="https://dev.xscriptor.com/x/docs"
 SUPPORT_URL="https://dev.xscriptor.com/x/support"
-BUG_REPORT_URL="https://github.com/xscriptordev/x"
+BUG_REPORT_URL="https://github.com/xscriptor/x"
 LOGO=x
