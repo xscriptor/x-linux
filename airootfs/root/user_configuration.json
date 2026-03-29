@@ -47,6 +47,7 @@
     "ntp": true,
     "packages": [
         "x-release",
+        "xpm",
         "git",
         "base-devel",
         "wget",
