@@ -1,14 +1,14 @@
 <h1 align="center"> Security Policy </h1>
 
 <div align="center">
-  <p>Protecting the Xscriptor JetBrains ecosystem</p>
+  <p>Protecting the X Linux ecosystem and its custom repositories</p>
 </div>
 
 <hr />
 
 <h2 align="center" id="reporting-vulnerabilities"> Reporting Security Vulnerabilities </h2>
 
-<p>If you discover a security vulnerability in <b>Xscriptor JetBrains</b> (including themes, UI modifications, or resource configurations), please report it responsibly via email to:</p>
+<p>If you discover a security vulnerability in <b>X Linux</b> (including exploits in the <code>xbuild</code> scripts, the <code>[x]</code> repository, or <code>x-release</code> branding hooks), please report it responsibly via email to:</p>
 
 <p align="center">
   <b>Email:</b> <a href="mailto:x@xscriptor.com">x@xscriptor.com</a>
@@ -22,10 +22,10 @@
 <p>When reporting a security issue, please provide:</p>
 <ol>
   <li><b>Description</b> — A clear explanation of the vulnerability.</li>
-  <li><b>Type</b> — The category of the issue (e.g., configuration injection, sensitive data exposure, etc.).</li>
+  <li><b>Type</b> — The category of the issue (e.g., privilege escalation, repository compromise, installer script injection).</li>
   <li><b>Steps to Reproduce</b> — Detailed steps or a Proof of Concept (PoC) to trigger the vulnerability.</li>
-  <li><b>Impact</b> — How severe is the issue? What could an attacker achieve?</li>
-  <li><b>Affected Component</b> — Which specific theme pack or resource is affected?</li>
+  <li><b>Impact</b> — How severe is the issue? What could an attacker achieve on an installed system?</li>
+  <li><b>Affected Component</b> — Which specific script (e.g., <code>x-postinstall.sh</code>) or package is affected?</li>
 </ol>
 
 <h3 align="center"> Guidelines </h3>
@@ -39,12 +39,12 @@
 
 <h2 align="center" id="best-practices"> Security Best Practices for Users </h2>
 
-<p>While these resources are designed to be safe, please keep these recommendations in mind:</p>
+<p>While X Linux is built to be a clean Arch spin, please keep these recommendations in mind:</p>
 <ul>
-  <li><b>Stay updated</b> — Always use the latest version of the themes and configurations available in this repository.</li>
-  <li><b>Verify IDE Settings</b> — When importing settings or themes, ensure you understand the changes being made to your JetBrains IDE core.</li>
-  <li><b>Configuration Privacy</b> — Be cautious when sharing your IDE export files if they contain sensitive file paths or tokens.</li>
-  <li><b>Trusted Sources</b> — Only apply UI modifications and themes from the official Xscriptor repository.</li>
+  <li><b>Stay updated</b> — Regularly run <code>sudo pacman -Syu</code> to receive the latest security patches from both Arch and the <code>[x]</code> repository.</li>
+  <li><b>Verify ISO Integrity</b> — Always verify the checksum of your built ISO before installation.</li>
+  <li><b>Repository Trust</b> — Only use the official <code>[x]</code> repository as defined in the <code>pacman.conf</code> of this project.</li>
+  <li><b>Post-install Audit</b> — If you modify the <code>airootfs</code> overlay, ensure you are not accidentally including sensitive credentials or insecure file permissions.</li>
 </ul>
 
 <hr />
@@ -61,7 +61,7 @@
   </thead>
   <tbody>
     <tr>
-      <td align="center">latest</td>
+      <td align="center">latest (Rolling)</td>
       <td align="center">Active</td>
       <td align="center">latest</td>
     </tr>
@@ -71,5 +71,5 @@
 <hr />
 
 <div align="center">
-  <p><b>Thank you for helping keep Xscriptor JetBrains secure!</b></p>
+  <p><b>Thank you for helping keep X Linux secure!</b></p>
 </div>

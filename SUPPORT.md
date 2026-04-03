@@ -1,7 +1,7 @@
 <h1 align="center"> Support </h1>
 
 <div align="center">
-  <p>Need help with themes, resource configurations, or UI modifications for JetBrains IDEs? Use the channels below.</p>
+  <p>Need help with ISO builds, the X repository, or post-install branding? Use the channels below to get assistance with the X Linux ecosystem.</p>
 </div>
 
 <hr />
@@ -17,24 +17,25 @@
 
 <h2 align="center" id="get-help"> Get Help </h2>
 <ul>
-  <li><b>Open an issue:</b> <a href="https://github.com/xscriptor/jetbrains/issues">github.com/xscriptor/jetbrains/issues</a></li>
+  <li><b>Open an issue:</b> <a href="https://github.com/xscriptor/x-linux/issues">github.com/xscriptor/x-linux/issues</a></li>
   <li><b>Security reports:</b> <a href="mailto:x@xscriptor.com">x@xscriptor.com</a> (private disclosure only)</li>
 </ul>
 
 <h2 align="center" id="before-opening-an-issue"> Before Opening an Issue </h2>
 <ul>
-  <li>Confirm you are using the latest version of the theme or resource pack.</li>
-  <li>Include your <b>OS</b> and <b>IDE variant</b> (Android Studio, IntelliJ IDEA, PyCharm, CLion, etc.).</li>
-  <li>Provide clear reproduction steps and screenshots of the UI issue when possible.</li>
+  <li>Confirm you are building with the latest <code>archiso</code> and the newest commits from this repository.</li>
+  <li>If the issue is in an installed system, confirm your <code>x-release</code> package is up to date.</li>
+  <li>Include your <b>Hardware specs</b> and whether you are testing on <b>Bare Metal</b> or a <b>Virtual Machine</b>.</li>
+  <li>Provide the build logs or <code>archinstall</code> logs if the installation failed.</li>
 </ul>
 
 <h2 align="center" id="response-expectations"> Response Expectations </h2>
 <p align="center">
-  Maintainers review issues as time allows. Clear reports with reproducible steps and visual evidence are prioritized to ensure the best development experience.
+  Maintainers review issues as time allows. Reports that include detailed logs, reproduction steps, and clear environment descriptions are prioritized to ensure a stable rolling release.
 </p>
 
 <hr />
 
 <div align="center">
-  <p><b>Thank you for using Xscriptor Theme for JetBrains!</b></p>
+  <p><b>Thank you for supporting X Linux!</b></p>
 </div>
