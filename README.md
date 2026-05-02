@@ -14,12 +14,9 @@
 <h2 align="center"> Table of Contents </h2>
 <p align="center">
   <a href="#overview">Overview</a> •
-  <a href="#project-structure">Project Structure</a> •
-  <a href="#the-x-repository">The X Repository</a> •
-  <a href="#building-the-iso">Building the ISO</a> •
-  <a href="#building-for-wsl">Building for WSL</a> •
-  <a href="#archinstall-preconfiguration">Archinstall</a> •
-  <a href="#post-installation-fallback">Post-installation</a> •
+  <a href="#project-status">Project Status</a> •
+  <a href="#project-composition">Project Composition</a> •
+  <a href="#quick-start">Quick Start</a> •
   <a href="#related-documents">Related Documents</a> •
   <a href="#x">X</a>
 </p>
@@ -34,98 +31,90 @@
 <ul>
   <li><b>Custom branding</b> — Identity applied to <code>/etc/os-release</code>, GRUB, MOTD, and wallpapers.</li>
   <li><b>X package repository</b> — Dedicated <code>[x]</code> repo in <code>pacman.conf</code> for branding and tools.</li>
-  <li><b>Preconfigured archinstall</b> — Ships with <code>user_configuration.json</code> for hands-free installation.</li>
-  <li><b>Post-install automation</b> — Scripts to apply branding to GNOME, KDE Plasma, XFCE, GDM, SDDM, and LightDM.</li>
-  <li><b>WSL support</b> — Tools to build a WSL-importable tarball easily.</li>
+  <li><b>Preconfigured archinstall</b> — Ships with predefined configuration files for streamlined installation.</li>
+  <li><b>Post-install automation</b> — Scripts to apply branding and setup tasks after installation.</li>
+  <li><b>WSL support</b> — Tools to build a WSL-importable root filesystem tarball.</li>
 </ul>
 
 <hr />
 
-<h2 align="center" id="project-structure"> Project Structure </h2>
+<h2 align="center" id="project-status"> Project Status </h2>
 
-<pre><code>x-linux/
-├── profiledef.sh             # ArchISO profile definition
-├── pacman.conf               # Package manager config (includes [x] repo)
-├── packages.x86_64           # Package list for ISO build
-├── airootfs/                 # Root filesystem overlay
-│   ├── etc/
-│   │   ├── os-release        # X system identity
-│   │   ├── default/grub      # GRUB configuration
-│   │   ├── motd              # Message of the Day
-│   ├── root/
-│   │   ├── x-autostart.sh    # Automated installation script
-│   │   ├── x-postinstall.sh  # Post-install branding
-│   │   └── user_configuration.json
-├── xbuild.sh                 # Build ISO locally
-├── xbuildwsl.sh              # Build WSL tarball
-└── roadmap.md                # Project roadmap</code></pre>
+<ul>
+  <li><b>Development stage:</b> Active.</li>
+  <li><b>Build model:</b> Local <code>mkarchiso</code> flow for ISO and dedicated scripts for WSL rootfs.</li>
+  <li><b>Automation:</b> Roadmap-to-issues synchronization is configured in GitHub Actions.</li>
+  <li><b>Focus areas:</b> Package repository maturity, installer UX, documentation, and release pipeline hardening.</li>
+</ul>
+
+<p>Detailed status report: <a href="./docs/project-state.md">Project State</a></p>
 
 <hr />
 
-<h2 align="center" id="the-x-repository"> The X Repository </h2>
+<h2 align="center" id="project-composition"> Project Composition </h2>
 
-<p>The repository is pre-configured in <code>pacman.conf</code>:</p>
+<ul>
+  <li><code>airootfs/</code>: Root filesystem overlay (system config, branding, installer automation).</li>
+  <li><code>profiledef.sh</code>: ArchISO profile metadata, boot modes, and file permissions.</li>
+  <li><code>packages.x86_64</code>: Package manifest for ISO/rootfs builds.</li>
+  <li><code>pacman.conf</code>: Package manager configuration, including the <code>[x]</code> repository.</li>
+  <li><code>xbuild.sh</code>: ISO build script.</li>
+  <li><code>xbuildwsl.sh</code> / <code>xbuildwslc.sh</code>: WSL tarball build scripts.</li>
+  <li><code>ROADMAP.md</code>: Project roadmap used as issue-sync source.</li>
+</ul>
 
-<pre><code>[x]
-SigLevel = Optional TrustAll
-Server = https://xscriptor.github.io/x-repo/repo/x86_64</code></pre>
-
-<p>To add it to an existing Arch installation, append the block above to <code>/etc/pacman.conf</code> and run:</p>
-
-<pre><code>sudo pacman -Sy x-release</code></pre>
+<p>Detailed structure reference: <a href="./docs/project-structure.md">Project Structure</a></p>
 
 <hr />
 
-<h2 align="center" id="building-the-iso"> Building the ISO </h2>
+<h2 align="center" id="quick-start"> Quick Start </h2>
 
-<p>Install <code>archiso</code> and run the build script:</p>
+<h3 align="center"> Build the ISO </h3>
 
 <pre><code>sudo pacman -S archiso
 ./xbuild.sh</code></pre>
 
-<p>The resulting <code>.iso</code> image will be stored inside the <code>./out/</code> directory.</p>
+<p>Output: <code>./out/*.iso</code></p>
 
-<hr />
-
-<h2 align="center" id="building-for-wsl"> Building for WSL </h2>
-
-<p>To create a tarball compatible with Windows Subsystem for Linux:</p>
+<h3 align="center"> Build for WSL </h3>
 
 <pre><code>sudo ./xbuildwsl.sh</code></pre>
 
-<hr />
-
-<h2 align="center" id="archinstall-preconfiguration"> Archinstall Preconfiguration </h2>
-
-<p>The ISO includes a pre-configured <code>archinstall</code> profile for a streamlined installation process.</p>
-
-<blockquote>
-  <p><b>Note:</b> On some hardware, you may need to manually re-select the disk partitioning layout during the setup wizard.</p>
-</blockquote>
+<p>Output: <code>./out-wsl/x-YYYY.MM.DD.tar.gz</code> (or <code>.tar.zst</code> when using <code>xbuildwslc.sh</code>).</p>
 
 <hr />
 
-<h2 align="center" id="post-installation-fallback"> Post-installation (Fallback) </h2>
-
-<p>If the X repository is unreachable, apply branding manually (while the new system is still mounted at <code>/mnt</code>):</p>
-
-<pre><code>/root/x-postinstall.sh</code></pre>
-
-<hr />
-
-<h2 align="center" id="related-documents">Related Documents</h2>
+<h2 align="center" id="related-documents"> Related Documents </h2>
 
 <ul>
-  <li><a href="./LICENSE">License</a></li>
+  <li><a href="./docs/project-state.md">Project State</a></li>
+  <li><a href="./docs/project-structure.md">Project Structure</a></li>
+  <li><a href="./docs/build-iso.md">Build ISO Guide</a></li>
+  <li><a href="./docs/build-wsl.md">Build WSL Guide</a></li>
+  <li><a href="./docs/x-repository.md">X Repository Guide</a></li>
+  <li><a href="./docs/default-installation.md">Default Installation Guide</a></li>
+  <li><a href="./WSL_GUIDE.md">Legacy WSL Guide</a></li>
+  <li><a href="./ROADMAP.md">Roadmap</a></li>
   <li><a href="./CODE_OF_CONDUCT.md">Code of Conduct</a></li>
   <li><a href="./CONTRIBUTING.md">Contributions</a></li>
-  <li><a href="./ROADMAP.md">Roadmap</a></li>
+  <li><a href="./SECURITY.md">Security</a></li>
+  <li><a href="./SUPPORT.md">Support</a></li>
 </ul>
 
 
-<div align="center">
-<h2 align="center" id="x">X</h2>
+<div id="x" align="center">
+<h2>X</h2>
 
-<a href="https://github.com/xscriptor">XGitHub</a> &middot;
-<a href="https://dev.xscriptor.com">XWeb</a>
+<a href="https://dev.xscriptor.com">
+  <img src="https://xscriptor.github.io/icons/icons/code/product-design/xsvg/verified-filled.svg" width="24" alt="X Web" />
+</a>
+ & 
+<a href="https://github.com/xscriptor">
+  <img src="https://xscriptor.github.io/icons/icons/code/product-design/xsvg/github.svg" width="24" alt="X Github Profile" />
+</a>
+ & 
+<a href="https://www.xscriptor.com">
+  <img src="https://xscriptor.github.io/icons/icons/code/product-design/xsvg/quotes.svg" width="24" alt="Xscriptor web" />
+</a>
+
 </div>
