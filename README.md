@@ -9,6 +9,13 @@
   <p align="center"><b>Project status:</b> Under active development</p>
 </blockquote>
 
+<p align="center">
+    <img alt="License" src="https://img.shields.io/badge/license-GPL--3.0-blue.svg">
+    <img alt="Language" src="https://img.shields.io/badge/Language-Shell-89e051?logo=gnu-bash&logoColor=white">
+    <img alt="Platform" src="https://img.shields.io/badge/Platform-Arch%20Linux-1793D1?logo=arch-linux&logoColor=white">
+    <img alt="Status" src="https://img.shields.io/badge/Status-Active%20Development-2ea44f">
+</p>
+
 <hr />
 
 <h2 align="center"> Table of Contents </h2>
